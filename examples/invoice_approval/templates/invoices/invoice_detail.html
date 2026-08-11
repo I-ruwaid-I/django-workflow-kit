@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Invoice {{ invoice.number }}</h2>
+
+<table>
+    <tr><th>Customer</th><td>{{ invoice.customer_name }}</td></tr>
+    <tr><th>Amount</th><td>{{ invoice.amount }}</td></tr>
+    <tr><th>Current State</th><td>{{ invoice.current_state_label }}</td></tr>
+    <tr><th>Created</th><td>{{ invoice.created_at }}</td></tr>
+    <tr><th>Updated</th><td>{{ invoice.updated_at }}</td></tr>
+</table>
+
+{% if invoice.description %}
+<p><strong>Description:</strong> {{ invoice.description }}</p>
+{% endif %}
+
+{% if available_actions %}
+<section>
+    <h3>Workflow actions</h3>
+    {% for action in available_actions %}
+    <form method="post" action="{{ action.url }}">
+        {% csrf_token %}
+        {% if action.name == "reject" %}
+        <label class="sr-only" for="reason-{{ action.name }}">Reason</label>
+        <input type="text" id="reason-{{ action.name }}" name="reason" placeholder="Reason (optional)">
+        {% endif %}
+        <button type="submit">{{ action.name|title }}</button>
+    </form>
+    {% endfor %}
+</section>
+{% endif %}
+
+{% if timeline %}
+<section>
+    <h3>Timeline</h3>
+    <ol class="timeline">
+        {% for event in timeline %}
+        <li>
+            <strong>{{ event.label }}</strong>
+            <span class="actor">{{ event.actor|default:"—" }}</span>
+            <time>{{ event.timestamp|date:"Y-m-d H:i" }}</time>
+            {% if event.reason %}<p class="reason">{{ event.reason }}</p>{% endif %}
+        </li>
+        {% endfor %}
+    </ol>
+</section>
+{% endif %}
+
+<section>
+    <h3>Comments</h3>
+    <ul class="comments">
+        {% for comment in comments %}
+        <li>
+            <strong>{{ comment.author_label }}</strong>
+            <time>{{ comment.created_at|date:"Y-m-d H:i" }}</time>
+            <p>{{ comment.text }}</p>
+        </li>
+        {% empty %}
+        <li><em>No comments yet.</em></li>
+        {% endfor %}
+    </ul>
+    <form method="post" action="{% url 'invoices:invoice_comment' invoice.pk %}">
+        {% csrf_token %}
+        <label class="sr-only" for="comment-text">Add a comment</label>
+        <textarea id="comment-text" name="text" rows="2" placeholder="Add a comment"></textarea>
+        <button type="submit">Add comment</button>
+    </form>
+</section>
+
+<section>
+    <h3>Attachments</h3>
+    <ul class="attachments">
+        {% for attachment in attachments %}
+        <li>
+            <a href="{{ attachment.file.url }}">{{ attachment.name }}</a>
+            <span class="meta">{{ attachment.size }} bytes</span>
+            <span class="actor">{{ attachment.uploaded_by|default:"—" }}</span>
+        </li>
+        {% empty %}
+        <li><em>No attachments yet.</em></li>
+        {% endfor %}
+    </ul>
+    <form method="post" action="{% url 'invoices:invoice_attach' invoice.pk %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label class="sr-only" for="attachment-file">Attach a file</label>
+        <input type="file" id="attachment-file" name="file">
+        <button type="submit">Upload</button>
+    </form>
+</section>
+
+<p><a href="{% url 'invoices:invoice_list' %}">Back to all invoices</a></p>
+{% endblock %}

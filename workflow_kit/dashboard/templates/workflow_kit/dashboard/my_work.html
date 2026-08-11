@@ -1,0 +1,62 @@
+{% extends "workflow_kit/dashboard/base.html" %}
+{% load i18n %}
+{% block title %}{% trans "My Work" %} · {% trans "Workflow Dashboard" %}{% endblock %}
+
+{% block content %}
+<h1 class="page-title">{% trans "My Work" %}</h1>
+
+<section class="panel" aria-labelledby="pending-title">
+  <h2 id="pending-title" class="panel__title">{% trans "Pending Approvals" %}</h2>
+  {% if not pending_approvals %}
+  <div class="empty-state">
+    <p class="empty-state__title">{% trans "No pending approvals." %}</p>
+    <p class="empty-state__hint">{% trans "You're all caught up." %}</p>
+  </div>
+  {% else %}
+  <ul class="worklist">
+    {% for approval in pending_approvals %}
+    <li class="worklist__item">
+      <div class="worklist__body">
+        <a class="worklist__title" href="{% url 'workflow_kit_dashboard:execution_detail' approval.execution.pk %}">
+          {{ approval.execution }}
+        </a>
+        <p class="worklist__meta">
+          {{ approval.step }} · {% trans "due" %} {{ approval.due_at|date:"Y-m-d H:i"|default:"—" }}
+        </p>
+      </div>
+      {% if approval.is_overdue %}
+      <span class="badge badge--danger">{% trans "Overdue" %}</span>
+      {% else %}
+      <span class="badge badge--pending">{% trans "Pending" %}</span>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</section>
+
+<section class="panel" aria-labelledby="delegated-title">
+  <h2 id="delegated-title" class="panel__title">{% trans "Delegated Tasks" %}</h2>
+  {% if not delegations %}
+  <div class="empty-state">
+    <p class="empty-state__title">{% trans "Nothing has been delegated to you." %}</p>
+  </div>
+  {% else %}
+  <ul class="worklist">
+    {% for delegation in delegations %}
+    <li class="worklist__item">
+      <div class="worklist__body">
+        <a class="worklist__title" href="{% url 'workflow_kit_dashboard:execution_detail' delegation.execution.pk %}">
+          {{ delegation.execution }}
+        </a>
+        <p class="worklist__meta">
+          {% if delegation.granter %}{{ delegation.granter }} → {% endif %}{{ delegation.step|default:"*" }}
+        </p>
+      </div>
+      <span class="badge badge--info">{% trans "Delegated" %}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</section>
+{% endblock %}

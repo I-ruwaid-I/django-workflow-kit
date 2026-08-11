@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Log in</h2>
+<p>Use one of the seeded demo accounts (password: <code>demo-password-123</code>) or any user you create.</p>
+
+{% if form.errors %}
+<p class="error">Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <p>
+        {{ form.username.label_tag }}
+        {{ form.username }}
+    </p>
+    <p>
+        {{ form.password.label_tag }}
+        {{ form.password }}
+    </p>
+    <input type="hidden" name="next" value="{{ next }}">
+    <button type="submit">Log in</button>
+</form>
+
+<p><a href="{% url 'invoices:invoice_list' %}">Back to invoices</a></p>
+{% endblock %}

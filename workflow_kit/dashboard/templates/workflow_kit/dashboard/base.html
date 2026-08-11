@@ -1,0 +1,44 @@
+{% load static %}{% load i18n %}<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Workflow Dashboard{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'workflow_kit/dashboard/dashboard.css' %}">
+</head>
+<body class="dash">
+<a class="skip-link" href="#main">{% trans "Skip to content" %}</a>
+<header class="dash-header">
+  <div class="dash-header__inner">
+    <a class="dash-brand" href="{% url 'workflow_kit_dashboard:overview' %}">
+      <span class="dash-brand__mark" aria-hidden="true">◈</span>
+      <span class="dash-brand__name">Workflow</span>
+    </a>
+    <nav class="dash-nav" aria-label="{% trans 'Primary' %}">
+      <a href="{% url 'workflow_kit_dashboard:overview' %}"
+         {% if page == 'overview' %}aria-current="page"{% endif %}>{% trans "Overview" %}</a>
+      <a href="{% url 'workflow_kit_dashboard:my_work' %}"
+         {% if page == 'my_work' %}aria-current="page"{% endif %}>{% trans "My Work" %}</a>
+      <a href="{% url 'workflow_kit_dashboard:executions' %}"
+         {% if page == 'executions' %}aria-current="page"{% endif %}>{% trans "Executions" %}</a>
+      {% if user.is_staff or perms.workflow_kit.view_analytics %}
+      <a href="{% url 'workflow_kit_dashboard:analytics' %}"
+         {% if page == 'analytics' %}aria-current="page"{% endif %}>{% trans "Analytics" %}</a>
+      {% endif %}
+    </nav>
+    <div class="dash-user">
+      <span class="dash-user__name">{{ user.get_username }}</span>
+      {% if user.is_staff %}<span class="badge badge--staff">{% trans "Staff" %}</span>{% endif %}
+    </div>
+  </div>
+</header>
+
+<main id="main" class="dash-main">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="dash-footer">
+  <span>{% trans "Django Workflow Kit" %} · {% trans "Dashboard" %}</span>
+</footer>
+</body>
+</html>

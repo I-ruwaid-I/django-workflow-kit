@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Invoices</h2>
+<p><a href="{% url 'invoices:invoice_create' %}">Create invoice</a></p>
+
+{% if invoices %}
+<table>
+    <thead>
+        <tr>
+            <th>Number</th>
+            <th>Customer</th>
+            <th>Amount</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for invoice in invoices %}
+        <tr>
+            <td><a href="{% url 'invoices:invoice_detail' invoice.pk %}">{{ invoice.number }}</a></td>
+            <td>{{ invoice.customer_name }}</td>
+            <td>{{ invoice.amount }}</td>
+            <td>{{ invoice.current_state_label }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No invoices yet. <a href="{% url 'invoices:invoice_create' %}">Create one</a>.</p>
+{% endif %}
+{% endblock %}

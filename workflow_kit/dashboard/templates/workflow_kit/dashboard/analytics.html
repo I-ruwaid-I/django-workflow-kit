@@ -1,0 +1,127 @@
+{% extends "workflow_kit/dashboard/base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Analytics" %} · {% trans "Workflow Dashboard" %}{% endblock %}
+
+{% block content %}
+<h1 class="page-title">{% trans "Workflow Analytics" %}</h1>
+
+<form class="filters" method="get" aria-label="{% trans 'Filter analytics' %}">
+  <label class="field">
+    <span class="field__label">{% trans "Workflow" %}</span>
+    <select name="workflow">
+      <option value="">{% trans "All workflows" %}</option>
+      {% for name in workflow_choices %}
+      <option value="{{ name }}" {% if workflow_filter == name %}selected{% endif %}>{{ name }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <button class="button" type="submit">{% trans "Apply" %}</button>
+</form>
+
+<section class="cards" aria-label="{% trans 'Execution metrics' %}">
+  <article class="card"><h2 class="card__label">{% trans "Started" %}</h2><p class="card__value">{{ metrics.started }}</p></article>
+  <article class="card"><h2 class="card__label">{% trans "Active" %}</h2><p class="card__value">{{ metrics.active }}</p></article>
+  <article class="card"><h2 class="card__label">{% trans "Completed" %}</h2><p class="card__value">{{ metrics.completed }}</p></article>
+  <article class="card"><h2 class="card__label">{% trans "Rejected" %}</h2><p class="card__value">{{ metrics.rejected }}</p></article>
+  <article class="card"><h2 class="card__label">{% trans "Failed" %}</h2><p class="card__value">{{ metrics.failed }}</p></article>
+  <article class="card"><h2 class="card__label">{% trans "Cancelled" %}</h2><p class="card__value">{{ metrics.cancelled }}</p></article>
+  <article class="card"><h2 class="card__label">{% trans "Escalated" %}</h2><p class="card__value">{{ metrics.escalated }}</p></article>
+  <article class="card"><h2 class="card__label">{% trans "SLA Breached" %}</h2><p class="card__value">{{ metrics.sla_breached }}</p></article>
+</section>
+
+<div class="grid-2">
+  <section class="panel" aria-labelledby="completion-title">
+    <h2 id="completion-title" class="panel__title">{% trans "Completion" %}</h2>
+    <p class="stat-row">
+      {% trans "Completed" %}: <strong>{{ completion.completed }}</strong> /
+      {{ completion.total }}
+      <span class="muted">({% trans "avg" %} {{ completion.duration.average|floatformat:1|default:"—" }}s)</span>
+    </p>
+  </section>
+
+  <section class="panel" aria-labelledby="approvals-title">
+    <h2 id="approvals-title" class="panel__title">{% trans "Approvals" %}</h2>
+    <p class="stat-row">
+      {% trans "Approved" %}: <strong>{{ approvals.approved }}</strong>
+      · {% trans "Rejected" %}: {{ approvals.rejected }}
+      · {% trans "Pending" %}: {{ approvals.pending }}
+      · {% trans "SLA breached" %}: {{ approvals.sla_breached }}
+    </p>
+  </section>
+</div>
+
+<div class="grid-2">
+  <section class="panel" aria-labelledby="durations-title">
+    <h2 id="durations-title" class="panel__title">{% trans "State Durations" %}</h2>
+    {% if not state_durations %}
+    <div class="empty-state"><p>{% trans "Not enough data yet." %}</p></div>
+    {% else %}
+    <table class="table">
+      <thead><tr><th scope="col">{% trans "State" %}</th><th scope="col">{% trans "Count" %}</th><th scope="col">{% trans "Avg (s)" %}</th></tr></thead>
+      <tbody>
+        {% for row in state_durations %}
+        <tr><td>{{ row.state }}</td><td>{{ row.count }}</td><td>{{ row.average|floatformat:1|default:"—" }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </section>
+
+  <section class="panel" aria-labelledby="bottlenecks-title">
+    <h2 id="bottlenecks-title" class="panel__title">{% trans "Bottlenecks" %}</h2>
+    {% if not bottlenecks %}
+    <div class="empty-state"><p>{% trans "No bottlenecks identified." %}</p></div>
+    {% else %}
+    <table class="table">
+      <thead><tr><th scope="col">{% trans "State" %}</th><th scope="col">{% trans "Count" %}</th><th scope="col">{% trans "Avg (s)" %}</th></tr></thead>
+      <tbody>
+        {% for row in bottlenecks %}
+        <tr><td>{{ row.state }}</td><td>{{ row.count }}</td><td>{{ row.average|floatformat:1|default:"—" }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </section>
+</div>
+
+<div class="grid-2">
+  <section class="panel" aria-labelledby="sla-title">
+    <h2 id="sla-title" class="panel__title">{% trans "SLA Compliance" %}</h2>
+    <p class="stat-row">
+      {% trans "Breached" %}: <strong>{{ sla.breached }}</strong>
+      · {% trans "Compliance" %}: {{ sla.compliance_rate|floatformat:1|default:"—" }}%
+    </p>
+  </section>
+
+  <section class="panel" aria-labelledby="escalations-title">
+    <h2 id="escalations-title" class="panel__title">{% trans "Escalations" %}</h2>
+    <p class="stat-row">
+      {% trans "Total" %}: <strong>{{ escalations.total }}</strong>
+      {% if escalations.average_delay_seconds %}
+      · {% trans "Avg delay" %}: {{ escalations.average_delay_seconds|floatformat:1 }}s
+      {% endif %}
+    </p>
+  </section>
+</div>
+
+<section class="panel" aria-labelledby="versions-title">
+  <h2 id="versions-title" class="panel__title">{% trans "Version Analytics" %}</h2>
+  {% if not versions %}
+  <div class="empty-state"><p>{% trans "No version data." %}</p></div>
+  {% else %}
+  <table class="table">
+    <thead>
+      <tr><th scope="col">{% trans "Workflow" %}</th><th scope="col">{% trans "Version" %}</th><th scope="col">{% trans "Started" %}</th><th scope="col">{% trans "Active" %}</th><th scope="col">{% trans "Completed" %}</th></tr>
+    </thead>
+    <tbody>
+      {% for row in versions %}
+      <tr>
+        <td>{{ row.workflow }}</td><td>v{{ row.version }}</td>
+        <td>{{ row.started }}</td><td>{{ row.active }}</td><td>{{ row.completed }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</section>
+{% endblock %}

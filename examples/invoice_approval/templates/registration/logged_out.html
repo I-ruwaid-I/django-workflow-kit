@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Logged out</h2>
+<p>You have been logged out.</p>
+<p><a href="{% url 'login' %}">Log in again</a> ·
+<a href="{% url 'invoices:invoice_list' %}">Back to invoices</a></p>
+{% endblock %}

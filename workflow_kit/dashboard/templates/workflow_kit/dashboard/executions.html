@@ -1,0 +1,86 @@
+{% extends "workflow_kit/dashboard/base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Executions" %} · {% trans "Workflow Dashboard" %}{% endblock %}
+
+{% block content %}
+<h1 class="page-title">{% trans "Workflow Executions" %}</h1>
+
+<form class="filters" method="get" aria-label="{% trans 'Filter executions' %}">
+  <label class="field">
+    <span class="field__label">{% trans "Search" %}</span>
+    <input type="search" name="q" value="{{ filters.q }}" placeholder="{% trans 'Workflow, state or ID' %}">
+  </label>
+  <label class="field">
+    <span class="field__label">{% trans "Workflow" %}</span>
+    <select name="workflow">
+      <option value="">{% trans "All" %}</option>
+      {% for name in workflows %}
+      <option value="{{ name }}" {% if filters.workflow == name %}selected{% endif %}>{{ name }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label class="field">
+    <span class="field__label">{% trans "State" %}</span>
+    <input type="text" name="state" value="{{ filters.state }}" placeholder="{% trans 'e.g. review' %}">
+  </label>
+  <label class="field">
+    <span class="field__label">{% trans "Status" %}</span>
+    <select name="status">
+      <option value="">{% trans "All" %}</option>
+      <option value="active" {% if filters.status == 'active' %}selected{% endif %}>{% trans "Active" %}</option>
+      <option value="completed" {% if filters.status == 'completed' %}selected{% endif %}>{% trans "Completed" %}</option>
+    </select>
+  </label>
+  <button class="button" type="submit">{% trans "Apply" %}</button>
+</form>
+
+{% if not executions %}
+<div class="empty-state">
+  <p class="empty-state__title">{% trans "No executions match." %}</p>
+  <p class="empty-state__hint">{% trans "Adjust the filters or clear the search to see more." %}</p>
+</div>
+{% else %}
+<div class="table-wrap">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">{% trans "ID" %}</th>
+        <th scope="col">{% trans "Workflow" %}</th>
+        <th scope="col">{% trans "Version" %}</th>
+        <th scope="col">{% trans "State" %}</th>
+        <th scope="col">{% trans "Started" %}</th>
+        <th scope="col">{% trans "Status" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for execution in executions %}
+      <tr>
+        <td><a href="{% url 'workflow_kit_dashboard:execution_detail' execution.pk %}">#{{ execution.pk }}</a></td>
+        <td>{{ execution.workflow_name }}</td>
+        <td>{{ execution.workflow_version.version|default:"—" }}</td>
+        <td>{{ execution.current_state }}</td>
+        <td>{{ execution.started_at|date:"Y-m-d H:i" }}</td>
+        <td>
+          {% if execution.completed_at %}
+          <span class="badge badge--success">{% trans "Completed" %}</span>
+          {% else %}
+          <span class="badge badge--active">{% trans "Active" %}</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<nav class="pagination" aria-label="{% trans 'Pagination' %}">
+  {% if executions.has_previous %}
+  <a class="button button--ghost" href="?page={{ executions.previous_page_number }}&q={{ filters.q }}&workflow={{ filters.workflow|urlencode }}&state={{ filters.state }}&status={{ filters.status }}">{% trans "Previous" %}</a>
+  {% endif %}
+  <span class="pagination__status">{% trans "Page" %} {{ executions.number }} / {{ executions.paginator.num_pages }}</span>
+  {% if executions.has_next %}
+  <a class="button button--ghost" href="?page={{ executions.next_page_number }}&q={{ filters.q }}&workflow={{ filters.workflow|urlencode }}&state={{ filters.state }}&status={{ filters.status }}">{% trans "Next" %}</a>
+  {% endif %}
+</nav>
+{% endif %}
+{% endblock %}

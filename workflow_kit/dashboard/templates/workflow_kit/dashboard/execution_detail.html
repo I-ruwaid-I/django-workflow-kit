@@ -1,0 +1,158 @@
+{% extends "workflow_kit/dashboard/base.html" %}
+{% load i18n %}
+{% block title %}#{{ execution.pk }} · {% trans "Workflow Dashboard" %}{% endblock %}
+
+{% block content %}
+<h1 class="page-title">
+  {{ execution }} <span class="page-title__sub">#{{ execution.pk }}</span>
+</h1>
+
+<section class="cards" aria-label="{% trans 'Execution summary' %}">
+  <article class="card">
+    <h2 class="card__label">{% trans "State" %}</h2>
+    <p class="card__value">{{ execution.current_state }}</p>
+  </article>
+  <article class="card">
+    <h2 class="card__label">{% trans "Version" %}</h2>
+    <p class="card__value">{{ execution.workflow_version.version|default:"—" }}</p>
+  </article>
+  <article class="card">
+    <h2 class="card__label">{% trans "Started" %}</h2>
+    <p class="card__value">{{ execution.started_at|date:"Y-m-d H:i" }}</p>
+  </article>
+  <article class="card">
+    <h2 class="card__label">{% trans "Status" %}</h2>
+    {% if execution.completed_at %}
+    <p class="card__value">{{ execution.status|default:"Completed" }}</p>
+    {% else %}
+    <p class="card__value">{% trans "Active" %}</p>
+    {% endif %}
+  </article>
+</section>
+
+<div class="grid-2">
+  <section class="panel" aria-labelledby="approvals-title">
+    <h2 id="approvals-title" class="panel__title">{% trans "Approvals" %}</h2>
+    {% if not approvals %}
+    <div class="empty-state"><p>{% trans "No approvals recorded." %}</p></div>
+    {% else %}
+    <table class="table">
+      <thead>
+        <tr><th scope="col">{% trans "Step" %}</th><th scope="col">{% trans "Assignee" %}</th><th scope="col">{% trans "Status" %}</th><th scope="col">{% trans "Due" %}</th></tr>
+      </thead>
+      <tbody>
+        {% for approval in approvals %}
+        <tr>
+          <td>{{ approval.step }}</td>
+          <td>{{ approval.approver|default:"—" }}</td>
+          <td><span class="badge badge--{{ approval.status|lower }}">{{ approval.status }}</span></td>
+          <td>{{ approval.due_at|date:"Y-m-d H:i"|default:"—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </section>
+
+  <section class="panel" aria-labelledby="versions-title">
+    <h2 id="versions-title" class="panel__title">{% trans "Versions" %}</h2>
+    {% if not versions %}
+    <div class="empty-state"><p>{% trans "No versions available." %}</p></div>
+    {% else %}
+    <table class="table">
+      <thead>
+        <tr><th scope="col">{% trans "Version" %}</th><th scope="col">{% trans "Status" %}</th><th scope="col">{% trans "Published" %}</th></tr>
+      </thead>
+      <tbody>
+        {% for version in versions %}
+        <tr>
+          <td>v{{ version.version }}</td>
+          <td><span class="badge badge--{{ version.status|lower }}">{{ version.status }}</span></td>
+          <td>{{ version.published_at|date:"Y-m-d H:i"|default:"—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </section>
+</div>
+
+<section class="panel" aria-labelledby="timeline-title">
+  <h2 id="timeline-title" class="panel__title">{% trans "Timeline" %}</h2>
+  {% if not timeline %}
+  <div class="empty-state"><p>{% trans "No timeline events yet." %}</p></div>
+  {% else %}
+  <ol class="timeline">
+    {% for event in timeline %}
+    <li class="timeline__item">
+      <time class="timeline__time">{{ event.timestamp|date:"Y-m-d H:i:s" }}</time>
+      <span class="timeline__label">{{ event.label }}</span>
+    </li>
+    {% endfor %}
+  </ol>
+  {% endif %}
+</section>
+
+<div class="grid-2">
+  <section class="panel" aria-labelledby="comments-title">
+    <h2 id="comments-title" class="panel__title">{% trans "Comments" %}</h2>
+    {% if not comments %}
+    <div class="empty-state"><p>{% trans "No comments." %}</p></div>
+    {% else %}
+    <ul class="comment-list">
+      {% for comment in comments %}
+      <li class="comment-list__item">
+        <p class="comment-list__meta">{{ comment.user|default:"—" }} · {{ comment.created_at|date:"Y-m-d H:i" }}</p>
+        <p class="comment-list__text">{{ comment.text }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </section>
+
+  <section class="panel" aria-labelledby="attachments-title">
+    <h2 id="attachments-title" class="panel__title">{% trans "Attachments" %}</h2>
+    {% if not attachments %}
+    <div class="empty-state"><p>{% trans "No attachments." %}</p></div>
+    {% else %}
+    <ul class="attachment-list">
+      {% for attachment in attachments %}
+      <li class="attachment-list__item">
+        <span class="attachment-list__name">{{ attachment.filename }}</span>
+        <span class="attachment-list__meta">{{ attachment.uploaded_by|default:"—" }} · {{ attachment.created_at|date:"Y-m-d H:i" }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </section>
+</div>
+
+<section class="panel" aria-labelledby="audit-title">
+  <h2 id="audit-title" class="panel__title">{% trans "Audit History" %}</h2>
+  {% if not events %}
+  <div class="empty-state"><p>{% trans "No audit events." %}</p></div>
+  {% else %}
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">{% trans "When" %}</th><th scope="col">{% trans "Actor" %}</th>
+          <th scope="col">{% trans "Action" %}</th><th scope="col">{% trans "From" %}</th><th scope="col">{% trans "To" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for event in events %}
+        <tr>
+          <td>{{ event.created_at|date:"Y-m-d H:i:s" }}</td>
+          <td>{{ event.user|default:"—" }}</td>
+          <td>{{ event.action }}</td>
+          <td>{{ event.source_state|default:"—" }}</td>
+          <td>{{ event.target_state|default:"—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

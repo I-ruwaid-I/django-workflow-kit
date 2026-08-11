@@ -1,0 +1,138 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-workflow-kit"
+version = "0.4.0"
+description = "A modern, extensible workflow and approval engine for Django applications."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [
+    { name = "Django Workflow Kit contributors" },
+]
+keywords = [
+    "django",
+    "workflow",
+    "approval",
+    "state-machine",
+    "state machine",
+    "business-process",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Office/Business :: Office Suites",
+    "Framework :: Django",
+    "Framework :: Django :: 6.1",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+dependencies = [
+    "Django>=6.1",
+]
+
+[project.optional-dependencies]
+drf = [
+    "djangorestframework>=3.14",
+]
+celery = [
+    "celery>=5.3",
+]
+redis = [
+    "redis>=5.0",
+]
+docs = [
+    "mkdocs>=1.5",
+    "mkdocs-material>=9.4",
+]
+dev = [
+    "build>=1.0",
+    "coverage[toml]>=7.4",
+    "django>=6.1",
+    "django-stubs>=6.0,<7",
+    "djangorestframework>=3.14",
+    "djangorestframework-stubs>=3.15,<4",
+    "mypy>=1.8",
+    "pre-commit>=3.6",
+    "pytest>=8.0",
+    "pytest-cov>=4.1",
+    "pytest-django>=4.7",
+    "ruff>=0.4",
+    "twine>=5.0",
+]
+
+[tool.setuptools]
+package-dir = { "" = "." }
+
+[tool.setuptools.packages.find]
+include = ["workflow_kit*"]
+
+[tool.setuptools.package-data]
+workflow_kit = ["py.typed", "dashboard/templates/**/*.html", "dashboard/static/**/*"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.test_project.settings"
+python_files = ["test_*.py"]
+pythonpath = ["."]
+addopts = "--strict-markers --strict-config -ra"
+testpaths = ["tests", "workflow_kit/tests"]
+filterwarnings = [
+    "error",
+]
+
+[tool.coverage.run]
+source = ["workflow_kit"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 90
+skip_covered = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests", "workflow_kit", "examples"]
+exclude = [
+    "*.md",
+    "**/migrations/*",
+    "dist",
+    "build",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I",
+    "UP",
+    "B",
+    "SIM",
+    "D",
+]
+ignore = [
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    "D200",
+    "D205",
+    "D400",
+    "D415",
+]
+preview = false
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*" = ["D"]
+"workflow_kit/tests/**/*" = ["D"]

@@ -1,0 +1,84 @@
+{% extends "workflow_kit/dashboard/base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Overview" %} · {% trans "Workflow Dashboard" %}{% endblock %}
+
+{% block content %}
+<h1 class="page-title">{% trans "Workflow Overview" %}</h1>
+
+{% if can_view_analytics %}
+<section class="cards" aria-label="{% trans 'Key metrics' %}">
+  <article class="card">
+    <h2 class="card__label">{% trans "Active" %}</h2>
+    <p class="card__value">{{ metrics.active }}</p>
+  </article>
+  <article class="card">
+    <h2 class="card__label">{% trans "Completed" %}</h2>
+    <p class="card__value">{{ metrics.completed }}</p>
+  </article>
+  <article class="card">
+    <h2 class="card__label">{% trans "Pending Actions" %}</h2>
+    <p class="card__value">{{ pending_actions }}</p>
+  </article>
+  <article class="card">
+    <h2 class="card__label">{% trans "SLA Breaches" %}</h2>
+    <p class="card__value">{{ metrics.sla_breached }}</p>
+  </article>
+  <article class="card">
+    <h2 class="card__label">{% trans "Escalations" %}</h2>
+    <p class="card__value">{{ escalations.total }}</p>
+  </article>
+  <article class="card">
+    <h2 class="card__label">{% trans "Failed" %}</h2>
+    <p class="card__value">{{ metrics.failed }}</p>
+  </article>
+</section>
+
+<section class="panel" aria-labelledby="health-title">
+  <h2 id="health-title" class="panel__title">{% trans "Workflow Health" %}</h2>
+  {% if not workflow_health %}
+  <div class="empty-state">
+    <p class="empty-state__title">{% trans "No workflow activity yet." %}</p>
+    <p class="empty-state__hint">{% trans "Workflows will appear here once executions start." %}</p>
+  </div>
+  {% else %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">{% trans "Workflow" %}</th>
+        <th scope="col">{% trans "Active" %}</th>
+        <th scope="col">{% trans "Completion" %}</th>
+        <th scope="col">{% trans "SLA" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in workflow_health %}
+      <tr>
+        <td><a href="{% url 'workflow_kit_dashboard:executions' %}?workflow={{ row.workflow|urlencode }}">{{ row.workflow }}</a></td>
+        <td>{{ row.active }}</td>
+        <td>{{ row.completion_rate|default:"—" }}%</td>
+        <td>{{ row.sla_rate|default:"—" }}%</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</section>
+{% else %}
+<section class="panel" aria-labelledby="notice-title">
+  <h2 id="notice-title" class="panel__title">{% trans "Welcome" %}</h2>
+  <p>
+    {% trans "You do not have permission to view workflow analytics. Aggregate metrics are available to staff or users with the view_analytics permission." %}
+  </p>
+  <p>
+    <a class="button" href="{% url 'workflow_kit_dashboard:my_work' %}">{% trans "Go to My Work" %}</a>
+  </p>
+</section>
+
+<section class="cards" aria-label="{% trans 'Your work' %}">
+  <article class="card">
+    <h2 class="card__label">{% trans "Pending Actions" %}</h2>
+    <p class="card__value">{{ pending_actions }}</p>
+  </article>
+</section>
+{% endif %}
+{% endblock %}

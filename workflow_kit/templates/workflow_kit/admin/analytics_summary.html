@@ -1,0 +1,44 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<h2>Workflow analytics</h2>
+<p>Read-only aggregate metrics derived from executions, approvals and the audit
+trail. This page never writes to the database.</p>
+
+{% if rows %}
+<table>
+  <thead>
+    <tr>
+      <th>Workflow</th>
+      <th>Started</th>
+      <th>Active</th>
+      <th>Completed</th>
+      <th>Rejected</th>
+      <th>Cancelled</th>
+      <th>Failed</th>
+      <th>Escalated</th>
+      <th>SLA breached</th>
+      <th>Avg completion (s)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ row.workflow }}</td>
+      <td>{{ row.started }}</td>
+      <td>{{ row.active }}</td>
+      <td>{{ row.completed }}</td>
+      <td>{{ row.rejected }}</td>
+      <td>{{ row.cancelled }}</td>
+      <td>{{ row.failed }}</td>
+      <td>{{ row.escalated }}</td>
+      <td>{{ row.sla_breached }}</td>
+      <td>{{ row.average_completion_seconds|default_if_none:"—" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No workflow executions have been recorded yet.</p>
+{% endif %}
+{% endblock %}
