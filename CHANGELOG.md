@@ -335,10 +335,9 @@ and this project adheres to
 - Project bootstrap: packaging, CI, test infrastructure and documentation
   skeleton.
 
-## 1.0.0rc1 - 2026-08-12 (release candidate)
+## 1.0.0 - 2026-08-12
 
-Release candidate for the first stable 1.0 release. No final 1.0.0 release has
-been published yet.
+First stable 1.0 release.
 
 ### Added
 

@@ -105,7 +105,7 @@ def test_public_classes_are_importable_and_constructible():
 
 def test_version_is_pinned_to_1_0_line():
     """The package version stays pinned to the advertised 1.0.0 line."""
-    assert workflow_kit.__version__ == "1.0.0rc1"
+    assert workflow_kit.__version__ == "1.0.0"
     major, minor, patch = workflow_kit.__version__.split(".")[:3]
     assert (int(major), int(minor)) == (1, 0)
     assert patch.startswith("0")
