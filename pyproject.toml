@@ -28,7 +28,6 @@ classifiers = [
     "Topic :: Office/Business :: Office Suites",
     "Framework :: Django",
     "Framework :: Django :: 6.1",
-    "Framework :: Django :: 6.2",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.12",
