@@ -1,0 +1,38 @@
+site_name: Django Workflow Kit
+docs_dir: docs
+theme:
+  name: material
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Quickstart: quickstart.md
+  - Concepts:
+      - Workflows and states: concepts/workflows.md
+      - Transitions and actions: concepts/transitions.md
+      - Configuration: concepts/configuration.md
+  - Guides:
+      - States: states.md
+      - Transitions: transitions.md
+      - Permissions: permissions.md
+      - Conditions: conditions.md
+      - Approvals: approvals.md
+      - Audit: audit.md
+      - Timeline: timeline.md
+      - Comments: comments.md
+      - Attachments: attachments.md
+      - Events: events.md
+      - Notifications: notifications.md
+      - Versioning: versioning.md
+      - Admin: admin.md
+      - REST API: api.md
+      - Analytics: analytics.md
+      - Observability: observability.md
+      - Dashboard: dashboard.md
+  - Production:
+      - Hardening: production.md
+      - Security: security.md
+      - Performance: performance.md
+      - Upgrading: upgrade.md
+  - Tooling: tooling.md
+  - Troubleshooting: troubleshooting.md
+  - Contributing: contributing.md

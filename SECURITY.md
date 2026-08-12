@@ -8,12 +8,13 @@ effort support only.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 0.1.x   | Best effort        |
+| 1.x     | Yes                |
+| 0.x     | Best effort        |
 
 ## Reporting a vulnerability
 
 Please report security issues by opening a private issue at
-<https://github.com/anomalyco/django-workflow-kit/issues> or emailing the
+<https://github.com/I-ruwaid-I/django-workflow-kit/issues> or emailing the
 maintainers. Please include:
 
 - A description of the vulnerability.

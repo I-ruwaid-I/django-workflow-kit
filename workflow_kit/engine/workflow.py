@@ -8,7 +8,7 @@ time rather than at execution time.
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
-from typing import TYPE_CHECKING, Any, TypeAlias
+from typing import TYPE_CHECKING, Any
 
 from workflow_kit.approvals.requirements import (
     ApprovalMode,
@@ -32,7 +32,7 @@ if TYPE_CHECKING:
 
     from workflow_kit.models.execution import WorkflowExecution
 
-_TransitionSpec: TypeAlias = "Transition | tuple[str, str, str]"
+type _TransitionSpec = Transition | tuple[str, str, str]
 
 
 def _humanize(name: str) -> str:

@@ -50,18 +50,13 @@ def _staff_user():
 
 def _permitted_user():
     from django.contrib.auth.models import Permission
-    from django.contrib.contenttypes.models import ContentType
 
     User = get_user_model()
     user = User.objects.create_user(username="perm-analyst", password="pw")
-    content_type, _ = ContentType.objects.get_or_create(
-        app_label="workflow_kit",
-        model="analytics",
-    )
-    permission, _ = Permission.objects.get_or_create(
+    permission = Permission.objects.get(
         codename="view_analytics",
-        content_type=content_type,
-        defaults={"name": "Can view workflow analytics"},
+        content_type__app_label="workflow_kit",
+        content_type__model="workflowexecution",
     )
     user.user_permissions.add(permission)
     return user

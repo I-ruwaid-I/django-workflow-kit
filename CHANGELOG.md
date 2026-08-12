@@ -10,6 +10,18 @@ and this project adheres to
 
 ### Added
 
+- Phase 14 - 1.0 release-readiness preparation (no version bump, no
+  publication):
+  - Added migration `0007` to provision the documented
+    `workflow_kit.view_analytics` permission on `WorkflowExecution`.
+  - Added PyPI project URLs, the Django 6.2 classifier, package data for admin
+    templates and a minimal `mkdocs.yml` for the documented `docs` extra.
+  - Removed placeholder Celery and Redis extras from package metadata because
+    no integrations are shipped yet.
+  - Corrected README and documentation drift for quickstart API usage,
+    compatibility, analytics permissions, repository URLs and security support
+    policy.
+
 - Phase 13 - production hardening (no version bump):
   - Deterministic concurrency and idempotency: `engine.versioning`
     `ensure_workflow_version` now retries on concurrent version creation with

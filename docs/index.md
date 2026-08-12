@@ -45,10 +45,11 @@ corresponding implementation phase.
   - [Phase 11 report](phase11-report.md)
   - [Phase 12 report](phase12-report.md)
   - [Phase 13 report](phase13-report.md)
+  - [Phase 14 pre-release audit](phase14-report.md)
 
 ## Status
 
-The project is under active development. Phases 1–12 are complete: the core
+The project is under active development. Phases 1-13 are complete: the core
 workflow engine (states, transitions, executions, atomic transition execution),
 permissions, sequential and parallel approvals (all-of / any-of / quorum) with
 an append-only audit trail and derived timeline, conditions with conditional
@@ -82,5 +83,7 @@ permissions, plus the **Workflow Dashboard** — a server-rendered Django app
 paginated executions, execution detail (state, version, timeline, audit,
 approvals, comments, attachments), and analytics screens, all consuming the
 existing engine, analytics and service layers behind the same permissions the
-REST API enforces. See the [Phase governance](../AGENTS.md) and
+REST API enforces. Phase 14 is the 1.0 release-readiness audit and release
+candidate preparation; it does not publish the package. See the
+[Phase governance](../AGENTS.md) and
 [CHANGELOG.md](../CHANGELOG.md) for details.

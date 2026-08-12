@@ -53,6 +53,10 @@ Execution-level pages never leak data: My Work derives its list from the same
 assignment records the engine uses to authorize decisions, so a user only ever
 sees the work they are genuinely allowed to decide.
 
+`workflow_kit.view_analytics` is created by the package migrations on the
+`WorkflowExecution` model. Grant it through Django's normal user/group
+permission tools.
+
 ## Design system
 
 The dashboard ships one plain CSS file

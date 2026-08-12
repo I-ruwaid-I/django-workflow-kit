@@ -37,6 +37,7 @@ from workflow_kit.models import (
 
 PHASE12_LEAF = "0005_alter_workflowevent_event_type_workflowattachment_and_more"
 PHASE13_LEAF = "0006_workflowexecution_workflow_ki_current_087898_idx_and_more"
+CURRENT_LEAF = "0007_workflowexecution_view_analytics_permission"
 
 User = get_user_model()
 
@@ -79,7 +80,7 @@ def test_phase13_migration_is_reversible():
     connection = connections["default"]
     try:
         executor = MigrationExecutor(connection)
-        assert _current_leaf(executor) == PHASE13_LEAF
+        assert _current_leaf(executor) == CURRENT_LEAF
 
         _migrate(executor, PHASE12_LEAF)
         assert _current_leaf(executor) == PHASE12_LEAF
@@ -105,7 +106,7 @@ def test_phase13_migration_is_reversible():
             fields.update(op.index.fields)
         assert fields == {"current_state", "-started_at"}
     finally:
-        _migrate(MigrationExecutor(connection), PHASE13_LEAF)
+        _migrate(MigrationExecutor(connection), CURRENT_LEAF)
 
 
 @pytest.mark.django_db(transaction=True)
@@ -177,10 +178,10 @@ def test_phase12_data_survives_upgrade_to_phase13(django_user_model):
             "comment": comment.pk,
         }
 
-        # 3. Upgrade to the Phase 13 schema.
+        # 3. Upgrade to the current schema.
         executor = _fresh_executor()
-        _migrate(executor, PHASE13_LEAF)
-        assert _current_leaf(executor) == PHASE13_LEAF
+        _migrate(executor, CURRENT_LEAF)
+        assert _current_leaf(executor) == CURRENT_LEAF
 
         # 4. Every object survives with the same identity and fields.
         version.refresh_from_db()
@@ -216,7 +217,7 @@ def test_phase12_data_survives_upgrade_to_phase13(django_user_model):
         assert WorkflowEvent.objects.count() == 1
         assert WorkflowComment.objects.count() == 1
     finally:
-        _migrate(MigrationExecutor(connection), PHASE13_LEAF)
+        _migrate(MigrationExecutor(connection), CURRENT_LEAF)
 
 
 @pytest.mark.django_db(transaction=True)
@@ -249,7 +250,7 @@ def test_upgrade_keeps_new_indexes_usable(django_user_model):
         assert execution_metrics(state="review").started == 1
         assert list(WorkflowExecution.objects.order_by("-started_at")).__len__() == 2
     finally:
-        _migrate(MigrationExecutor(connection), PHASE13_LEAF)
+        _migrate(MigrationExecutor(connection), CURRENT_LEAF)
 
 
 @pytest.mark.django_db
@@ -258,4 +259,4 @@ def test_migration_graph_has_no_duplicate_leaves():
     connection = connections["default"]
     graph = migrations.loader.MigrationLoader(connection).graph
     leaves = [key for key in graph.leaf_nodes() if key[0] == "workflow_kit"]
-    assert leaves == [("workflow_kit", PHASE13_LEAF)]
+    assert leaves == [("workflow_kit", CURRENT_LEAF)]

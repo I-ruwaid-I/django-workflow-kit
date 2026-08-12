@@ -328,6 +328,10 @@ by `IsAnalyticsViewer`: authenticated staff members, or users holding the
 HTTP 400 with `{"error": "invalid_analytics_arguments"}`. See the
 [Analytics](analytics.md) guide for the underlying Python API.
 
+`workflow_kit.view_analytics` is created by the package migrations on the
+`WorkflowExecution` model. Grant it through Django's normal user/group
+permission tools.
+
 ## Demo
 
 The `examples/invoice_approval` project mounts the API at `/api/` (session

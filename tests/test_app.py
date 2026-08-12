@@ -2,7 +2,10 @@
 
 import workflow_kit
 from django.apps import apps
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 from workflow_kit.apps import WorkflowKitConfig
+from workflow_kit.models import WorkflowExecution
 
 
 def test_version_is_semver():
@@ -19,3 +22,12 @@ def test_app_config_meta():
     assert isinstance(config, WorkflowKitConfig)
     assert config.name == "workflow_kit"
     assert config.label == "workflow_kit"
+
+
+def test_view_analytics_permission_is_provisioned(db):
+    content_type = ContentType.objects.get_for_model(WorkflowExecution)
+    permission = Permission.objects.get(
+        content_type=content_type,
+        codename="view_analytics",
+    )
+    assert permission.name == "Can view workflow analytics"

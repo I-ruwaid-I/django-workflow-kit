@@ -7,7 +7,7 @@ Thanks for taking the time to contribute to Django Workflow Kit.
 Requirements: Python >= 3.12 and Git.
 
 ```bash
-git clone https://github.com/anomalyco/django-workflow-kit.git
+git clone https://github.com/I-ruwaid-I/django-workflow-kit.git
 cd django-workflow-kit
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate

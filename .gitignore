@@ -75,3 +75,4 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+tests/media_test/workflow_kit/attachments/new/

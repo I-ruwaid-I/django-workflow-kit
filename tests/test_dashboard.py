@@ -19,7 +19,6 @@ from __future__ import annotations
 import pytest
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
-from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 
 from tests.analytics_helpers import manager, run
@@ -52,14 +51,10 @@ def _staff_user() -> object:
 def _permitted_user() -> object:
     User = get_user_model()
     user = User.objects.create_user(username="dash-perm", password="pw")
-    content_type, _ = ContentType.objects.get_or_create(
-        app_label="workflow_kit",
-        model="analytics",
-    )
-    permission, _ = Permission.objects.get_or_create(
+    permission = Permission.objects.get(
         codename="view_analytics",
-        content_type=content_type,
-        defaults={"name": "Can view workflow analytics"},
+        content_type__app_label="workflow_kit",
+        content_type__model="workflowexecution",
     )
     user.user_permissions.add(permission)
     return user

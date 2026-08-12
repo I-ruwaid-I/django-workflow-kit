@@ -37,7 +37,8 @@ clean public API.
 - Comments and file attachments on executions (recorded in the timeline and
   observable as domain events; files stored via Django's storage abstraction)
 - Extensible conditions evaluated against a typed context — never `eval`
-- Pluggable notification providers (email, webhooks, Slack, Teams)
+- Pluggable notification providers; email and signed webhooks are included,
+  with Slack, Teams or other channels added as custom providers
 - Developer experience: declarative workflow definitions, static validation
   with structured reports, introspection, dry-run simulation, action
   diagnostics (`explain` / `why-not`), DOT/Mermaid graphs, a
@@ -107,12 +108,13 @@ invoice_workflow = Workflow(
 )
 ```
 
-Execute transitions:
+Start an execution and perform transitions:
 
 ```python
-invoice_workflow.transition("submit", user=user)
-invoice_workflow.approve(user)
-invoice_workflow.reject(user, reason="Missing quotation")
+execution = invoice_workflow.start(invoice, user=user)
+execution.transition("submit", user=user)
+execution.approve(user)
+execution.reject(user, reason="Missing quotation")
 ```
 
 ## Documentation

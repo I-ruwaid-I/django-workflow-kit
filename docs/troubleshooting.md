@@ -25,4 +25,4 @@ pip install -e ".[dev]"
 ```
 
 Open an issue at
-<https://github.com/anomalyco/django-workflow-kit/issues> if problems persist.
+<https://github.com/I-ruwaid-I/django-workflow-kit/issues> if problems persist.

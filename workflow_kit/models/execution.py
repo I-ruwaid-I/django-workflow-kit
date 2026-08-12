@@ -58,6 +58,9 @@ class WorkflowExecution(models.Model):
 
     class Meta:
         ordering = ["-started_at"]
+        permissions = [
+            ("view_analytics", "Can view workflow analytics"),
+        ]
         indexes = [
             models.Index(fields=["workflow_name", "workflow_version"]),
             # current_state is filtered by the REST execution list and the
