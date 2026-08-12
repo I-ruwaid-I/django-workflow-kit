@@ -41,7 +41,7 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/I-ruwaid-I/django-workflow-kit"
 Repository = "https://github.com/I-ruwaid-I/django-workflow-kit"
-Documentation = "https://github.com/I-ruwaid-I/django-workflow-kit/tree/main/docs"
+Documentation = "https://django-workflow-kit.readthedocs.io/"c
 Changelog = "https://github.com/I-ruwaid-I/django-workflow-kit/blob/main/CHANGELOG.md"
 Issues = "https://github.com/I-ruwaid-I/django-workflow-kit/issues"
 
