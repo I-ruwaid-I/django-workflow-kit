@@ -1,15 +1,19 @@
 site_name: Django Workflow Kit
 docs_dir: docs
+
 theme:
   name: material
+
 nav:
   - Home: index.md
   - Installation: installation.md
   - Quickstart: quickstart.md
+
   - Concepts:
       - Workflows and states: concepts/workflows.md
       - Transitions and actions: concepts/transitions.md
       - Configuration: concepts/configuration.md
+
   - Guides:
       - States: states.md
       - Transitions: transitions.md
@@ -28,11 +32,20 @@ nav:
       - Analytics: analytics.md
       - Observability: observability.md
       - Dashboard: dashboard.md
+      - Workflow Examples:
+          - Overview: workflows/index.md
+
   - Production:
       - Hardening: production.md
       - Security: security.md
       - Performance: performance.md
       - Upgrading: upgrade.md
+
   - Tooling: tooling.md
   - Troubleshooting: troubleshooting.md
   - Contributing: contributing.md
+
+  - Reference:
+      - Changelog: changelog.md
+      - Contribution Guide: contributing-guide.md
+      - Security Policy: security-policy.md

@@ -76,3 +76,4 @@ Thumbs.db
 .env.*
 !.env.example
 tests/media_test/workflow_kit/attachments/new/
+/site

@@ -1,7 +1,6 @@
 # Contributing
 
-See [CONTRIBUTING.md](../CONTRIBUTING.md) at the repository root for the full
-contribution guide.
+See the [full contribution guide](contributing-guide.md).
 
 ## Testing
 

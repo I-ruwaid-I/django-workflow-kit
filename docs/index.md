@@ -39,13 +39,6 @@ corresponding implementation phase.
   - [Upgrading](upgrade.md)
 - [Troubleshooting](troubleshooting.md)
 - [Contributing](contributing.md)
-- Phase reports
-  - [Phase 9 report](phase9-report.md)
-  - [Phase 10 report](phase10-report.md)
-  - [Phase 11 report](phase11-report.md)
-  - [Phase 12 report](phase12-report.md)
-  - [Phase 13 report](phase13-report.md)
-  - [Phase 14 pre-release audit](phase14-report.md)
 
 ## Status
 
@@ -85,5 +78,4 @@ approvals, comments, attachments), and analytics screens, all consuming the
 existing engine, analytics and service layers behind the same permissions the
 REST API enforces. Phase 14 is the 1.0 release-readiness audit and release
 candidate preparation; it does not publish the package. See the
-[Phase governance](../AGENTS.md) and
-[CHANGELOG.md](../CHANGELOG.md) for details.
+[Changelog](changelog.md) for release details.

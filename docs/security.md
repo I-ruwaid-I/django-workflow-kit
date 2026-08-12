@@ -6,7 +6,8 @@ database, and never evaluated through `eval`/`exec`. Django authorization is
 always respected; the admin and the dashboard can never bypass transition
 permissions.
 
-For the vulnerability disclosure policy see [`SECURITY.md`](../SECURITY.md).
+For the vulnerability disclosure policy, see the
+[security policy](security-policy.md).
 
 ## Phase 13 security audit
 
