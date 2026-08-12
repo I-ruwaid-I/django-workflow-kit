@@ -10,7 +10,7 @@ from workflow_kit.models import WorkflowExecution
 
 def test_version_is_semver():
     assert len(workflow_kit.__version__.split(".")) == 3
-    assert workflow_kit.__version__ == "0.4.0"
+    assert workflow_kit.__version__ == "1.0.0rc1"
 
 
 def test_app_is_installed():

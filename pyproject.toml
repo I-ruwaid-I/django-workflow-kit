@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "django-workflow-kit"
-version = "0.4.0"
+version = "1.0.0rc1"
 description = "A modern, extensible workflow and approval engine for Django applications."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -22,7 +22,7 @@ keywords = [
     "business-process",
 ]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Office/Business :: Office Suites",

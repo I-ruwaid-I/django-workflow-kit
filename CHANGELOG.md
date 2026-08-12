@@ -10,18 +10,6 @@ and this project adheres to
 
 ### Added
 
-- Phase 14 - 1.0 release-readiness preparation (no version bump, no
-  publication):
-  - Added migration `0007` to provision the documented
-    `workflow_kit.view_analytics` permission on `WorkflowExecution`.
-  - Added PyPI project URLs, the Django 6.2 classifier, package data for admin
-    templates and a minimal `mkdocs.yml` for the documented `docs` extra.
-  - Removed placeholder Celery and Redis extras from package metadata because
-    no integrations are shipped yet.
-  - Corrected README and documentation drift for quickstart API usage,
-    compatibility, analytics permissions, repository URLs and security support
-    policy.
-
 - Phase 13 - production hardening (no version bump):
   - Deterministic concurrency and idempotency: `engine.versioning`
     `ensure_workflow_version` now retries on concurrent version creation with
@@ -346,6 +334,26 @@ and this project adheres to
   - Unit, integration and demo tests; coverage 96% on the package.
 - Project bootstrap: packaging, CI, test infrastructure and documentation
   skeleton.
+
+## 1.0.0rc1 - 2026-08-12 (release candidate)
+
+Release candidate for the first stable 1.0 release. No final 1.0.0 release has
+been published yet.
+
+### Added
+
+- 1.0 release-readiness preparation:
+  - Added migration `0007` to provision the documented
+    `workflow_kit.view_analytics` permission on `WorkflowExecution`.
+  - Added PyPI project URLs, the Django 6.2 classifier, package data for admin
+    templates and a minimal `mkdocs.yml` for the documented `docs` extra.
+  - Removed placeholder Celery and Redis extras from package metadata because
+    no integrations are shipped yet.
+  - Corrected README and documentation drift for quickstart API usage,
+    compatibility, analytics permissions, repository URLs and security support
+    policy.
+  - Public API frozen and verified (`workflow_kit.__all__`), coverage ≥ 90%,
+    full packaging and clean-room verification passed.
 
 ## 0.1.0 - 2026-08-08
 

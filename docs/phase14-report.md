@@ -10,8 +10,8 @@ Planned path:
 0.4.0 -> 1.0.0rc1 -> TestPyPI -> verification -> 1.0.0 -> PyPI
 ```
 
-The version remains `0.4.0` until the release-candidate commit is explicitly
-approved.
+The version is now `1.0.0rc1`; publication to TestPyPI and PyPI remains
+pending explicit approval.
 
 ## Pre-release preparation
 
