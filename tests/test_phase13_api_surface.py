@@ -7,7 +7,7 @@ lock that surface so it cannot accidentally grow (or shrink) between releases:
 * internal implementation modules are *not* re-exported as public names;
 * the exported objects are the stable, intentional classes/functions and not
   leftover import aliases;
-* the package version stays pinned to the advertised ``1.0.0`` line.
+* the package version stays pinned to the advertised ``1.0.1`` line.
 
 This mirrors the ``#27 Public Import Review`` requirement: only intentionally
 public objects are exported, and internal details stay behind their modules.
@@ -104,11 +104,11 @@ def test_public_classes_are_importable_and_constructible():
 
 
 def test_version_is_pinned_to_1_0_line():
-    """The package version stays pinned to the advertised 1.0.0 line."""
-    assert workflow_kit.__version__ == "1.0.0"
+    """The package version stays pinned to the advertised 1.0.1 line."""
+    assert workflow_kit.__version__ == "1.0.1"
     major, minor, patch = workflow_kit.__version__.split(".")[:3]
     assert (int(major), int(minor)) == (1, 0)
-    assert patch.startswith("0")
+    assert int(patch)>=0
 
 
 def test_subpackage_public_surfaces_are_consistent():

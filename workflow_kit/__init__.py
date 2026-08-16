@@ -131,7 +131,7 @@ from workflow_kit.observability import (
 from workflow_kit.permissions import PermissionContext, PermissionProvider
 from workflow_kit.timeline.event import TimelineEvent
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 __all__ = [
     "State",
