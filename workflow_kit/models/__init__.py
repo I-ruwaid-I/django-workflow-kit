@@ -14,6 +14,7 @@ on executions, both surfaced through the timeline as audit events.
 
 from workflow_kit.models.approval import Approval, ApprovalMode, ApprovalStatus
 from workflow_kit.models.attachment import WorkflowAttachment
+from workflow_kit.models.automation import AutomationRule
 from workflow_kit.models.comment import WorkflowComment
 from workflow_kit.models.delegation import WorkflowDelegation
 from workflow_kit.models.execution import WorkflowExecution
@@ -32,4 +33,5 @@ __all__ = [
     "WorkflowEventType",
     "WorkflowVersion",
     "VersionStatus",
+    "AutomationRule",
 ]

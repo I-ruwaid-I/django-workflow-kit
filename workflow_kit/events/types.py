@@ -37,6 +37,21 @@ class EventType(StrEnum):
     COMMENT_ADDED = "workflow.comment_added"
     ATTACHMENT_ADDED = "workflow.attachment_added"
 
+    @classmethod
+    def _missing_(cls, value):
+        """Allow host applications to use arbitrary event names.
+
+        This makes ``EventType("response.submitted")`` work for any string, so
+        automation rules can be triggered by application facts that are not
+        part of the kit's built-in vocabulary.
+        """
+        if isinstance(value, str):
+            member = object.__new__(cls)
+            member._name_ = value.upper()
+            member._value_ = value
+            return member
+        return None
+
 
 @dataclass(frozen=True)
 class ObjectRef:

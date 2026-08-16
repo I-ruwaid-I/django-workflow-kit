@@ -37,7 +37,7 @@ from workflow_kit.models import (
 
 PHASE12_LEAF = "0005_alter_workflowevent_event_type_workflowattachment_and_more"
 PHASE13_LEAF = "0006_workflowexecution_workflow_ki_current_087898_idx_and_more"
-CURRENT_LEAF = "0007_workflowexecution_view_analytics_permission"
+CURRENT_LEAF = "0009_automation_scope"
 
 User = get_user_model()
 

@@ -13,11 +13,12 @@ class WorkflowKitConfig(AppConfig):
     verbose_name = _("Workflow Kit")
 
     def ready(self) -> None:
-        """Install the structured observability bridge when enabled.
+        """Install the structured observability bridge and the automation hook.
 
         The observer subscribes to the existing domain event dispatcher and
         records structured log records; it never changes workflow behaviour.
-        Controlled by ``WORKFLOW_KIT["STRUCTURED_LOGGING"]`` (default True).
+        The automation hook evaluates WHEN/IF/THEN rules against every domain
+        event. Both are controlled by ``WORKFLOW_KIT`` settings.
         """
         from django.conf import settings as django_settings
 
@@ -26,3 +27,7 @@ class WorkflowKitConfig(AppConfig):
         config = getattr(django_settings, "WORKFLOW_KIT", {})
         if config.get("STRUCTURED_LOGGING", True):
             install_structured_logging()
+        if config.get("AUTOMATION", True):
+            from workflow_kit.automation import install
+
+            install()

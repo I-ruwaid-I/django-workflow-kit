@@ -77,3 +77,5 @@ Thumbs.db
 !.env.example
 tests/media_test/workflow_kit/attachments/new/
 /site
+/tests
+/workflow_kit/migrations

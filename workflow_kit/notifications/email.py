@@ -65,15 +65,18 @@ class EmailProvider(NotificationProvider):
         subject = self._subject(event)
         body = self._body(event)
         try:
-            # ``using`` selects the host project's ``MAILERS`` alias (Django
-            # >= 6.1). django-stubs 6.0 has not shipped that kwarg yet.
-            send_mail(  # type: ignore[call-arg]
-                subject,
-                body,
-                from_email=workflow_settings.EMAIL_FROM,
-                recipient_list=addresses,
-                using=workflow_settings.EMAIL_MAILER,
-            )
+            kwargs: dict[str, Any] = {
+                "from_email": workflow_settings.EMAIL_FROM,
+                "recipient_list": addresses,
+            }
+            # ``using`` selects the host project's ``MAILERS`` alias, available
+            # only on Django >= 6.1. On earlier versions the default backend is
+            # used, so the kwarg is omitted.
+            if hasattr(send_mail, "kwargs") and "using" in getattr(
+                send_mail, "__defaults__", ()
+            ):
+                kwargs["using"] = workflow_settings.EMAIL_MAILER
+            send_mail(subject, body, **kwargs)
         except Exception as exc:  # noqa: BLE001 - surface as a domain error
             raise NotificationError(f"Email delivery failed: {exc}") from exc
         return True
